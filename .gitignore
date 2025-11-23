@@ -1,0 +1,27 @@
+# BÁSICO
+
+# Executáveis e binários do Go
+/go-crud
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Diretório bin/
+bin/
+
+# Módulos e cache do Go
+/pkg/
+go.sum
+
+# Arquivos de ambiente
+.env
+
+# Arquivos do Docker
+docker-data/
+docker/volumes/
+docker-compose.override.yml
+
+# Migrations temporárias (opcional)
+#migrations/*.tmp
