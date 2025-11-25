@@ -7,6 +7,8 @@ import (
 	"database/sql"
 	"encoding/json"
 	"net/http"
+
+	"github.com/google/uuid"
 )
 
 type TaskHandler struct {
@@ -35,6 +37,7 @@ func (h *TaskHandler) Create(w http.ResponseWriter, r *http.Request) {
 	json.NewDecoder(r.Body).Decode(&request)
 
 	task := task.NewTask(
+		uuid.New().String(),
 		request.Title,
 		request.Description,
 		false,
@@ -45,12 +48,10 @@ func (h *TaskHandler) Create(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Erro ao criar task", http.StatusInternalServerError)
 		return
 	}
-    response := map[string]interface{}{
-        "message": "Task criada",
-        "id":      task.ID,
-    }
 
-    w.Header().Set("Content-Type", "application/json")
-    w.WriteHeader(201)
-    json.NewEncoder(w).Encode(response)
+	response := map[string]interface{}{"id": task.Id}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	json.NewEncoder(w).Encode(response)
 }

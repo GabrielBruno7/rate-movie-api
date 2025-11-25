@@ -14,21 +14,22 @@ func NewTaskDb(db *sql.DB) *TaskDb {
 }
 
 func (persistence *TaskDb) Create(t *task.Task) error {
-    query := `
+	query := `
         INSERT INTO tasks (
+			id,
             title,
             description,
             is_completed
-        ) VALUES ($1, $2, $3)
+        ) VALUES ($1, $2, $3, $4)
         RETURNING id
     `
 
-    err := persistence.db.QueryRow(query, t.Title, t.Description, t.IsCompleted).Scan(&t.ID)
-    if err != nil {
-        return err
-    }
+	err := persistence.db.QueryRow(query, t.Id, t.Title, t.Description, t.IsCompleted).Scan(&t.Id)
+	if err != nil {
+		return err
+	}
 
-    return nil
+	return nil
 }
 
 func (persistence *TaskDb) FindAll() ([]task.Task, error) {
@@ -44,7 +45,7 @@ func (persistence *TaskDb) FindAll() ([]task.Task, error) {
 	for rows.Next() {
 		var task task.Task
 
-		err := rows.Scan(&task.ID, &task.Title, &task.Description, &task.IsCompleted)
+		err := rows.Scan(&task.Id, &task.Title, &task.Description, &task.IsCompleted)
 		if err != nil {
 			return nil, err
 		}
