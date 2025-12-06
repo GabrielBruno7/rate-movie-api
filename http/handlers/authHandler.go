@@ -1,9 +1,11 @@
 package handlers
 
 import (
-	"crud/http/dto"
-	"crud/usecase"
+	"crud/domain/errs"
 	"crud/domain/user"
+	"crud/http/dto"
+	"crud/http/response"
+	"crud/usecase"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,8 +22,9 @@ func NewAuthHandler(usecase *usecase.AuthUsecase) *AuthHandler {
 
 func (authHandler *AuthHandler) Login(context *gin.Context) {
 	var request dto.LoginRequest
+
 	if err := context.ShouldBindJSON(&request); err != nil {
-		context.JSON(400, gin.H{"error": "Dados inválidos"})
+		response.BadRequest(context, errs.ErrInvalidBody)
 		return
 	}
 
@@ -32,7 +35,7 @@ func (authHandler *AuthHandler) Login(context *gin.Context) {
 
 	token, err := authHandler.usecase.Login(user)
 	if err != nil {
-		context.JSON(401, gin.H{"error": err.Error()})
+		response.HandleError(context, err)
 		return
 	}
 

@@ -1,8 +1,8 @@
 package usecase
 
 import (
+	"crud/domain/errs"
 	"crud/domain/user"
-	"errors"
 	"os"
 	"time"
 
@@ -25,16 +25,16 @@ func (authUsecase *AuthUsecase) Login(user *user.User) (string, error) {
 
 	user, err := authUsecase.repository.LoadUserByEmail(user)
 	if err != nil {
-		return "", errors.New("Credenciais inválidas")
+		return "", errs.NewWithCode(errs.ErrInvalidCredentials, err)
 	}
 
 	if user == nil {
-		return "", errors.New("Credenciais inválidas")
+		return "", errs.NewWithCode(errs.ErrInvalidCredentials, nil)
 	}
 
 	isPasswordValid := authUsecase.checkPassword(user.Password, password)
 	if !isPasswordValid {
-		return "", errors.New("Credenciais inválidas")
+		return "", errs.NewWithCode(errs.ErrInvalidCredentials, nil)
 	}
 
 	token, err := authUsecase.generateToken(user)
