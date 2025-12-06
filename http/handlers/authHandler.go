@@ -3,6 +3,7 @@ package handlers
 import (
 	"crud/http/dto"
 	"crud/usecase"
+	"crud/domain/user"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,7 +25,12 @@ func (authHandler *AuthHandler) Login(context *gin.Context) {
 		return
 	}
 
-	token, err := authHandler.usecase.Login(request.Email, request.Password)
+	user := &user.User{
+		Email:    request.Email,
+		Password: request.Password,
+	}
+
+	token, err := authHandler.usecase.Login(user)
 	if err != nil {
 		context.JSON(401, gin.H{"error": err.Error()})
 		return

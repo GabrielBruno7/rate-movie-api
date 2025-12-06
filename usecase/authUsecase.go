@@ -20,13 +20,10 @@ func NewAuthUsecase(repository user.Repository) *AuthUsecase {
 	}
 }
 
-func (authUsecase *AuthUsecase) Login(email string, password string) (string, error) {
-	tempUser := &user.User{
-		Email:    email,
-		Password: password,
-	}
+func (authUsecase *AuthUsecase) Login(user *user.User) (string, error) {
+	password := user.Password
 
-	user, err := authUsecase.repository.LoadUserByEmail(tempUser)
+	user, err := authUsecase.repository.LoadUserByEmail(user)
 	if err != nil {
 		return "", errors.New("Credenciais inválidas")
 	}
@@ -58,7 +55,7 @@ func (authUsecase *AuthUsecase) generateToken(user *user.User) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": user.Id,
-		"exp": time.Now().Add(time.Minute * 1).Unix(),
+		"exp": time.Now().Add(time.Minute * 15).Unix(),
 	})
 
 	return token.SignedString(secret)
