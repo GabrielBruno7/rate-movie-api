@@ -12,6 +12,9 @@ const (
 	ErrUserNotFound       = "4003"
 	ErrInvalidBody        = "4001"
 	ErrInternalServer     = "5000"
+	ErrWhenSearchMovie    = "5001"
+	ErrTMDBConnection     = "5002"
+	ErrTMDBAPIError       = "5003"
 )
 
 var errorMessages = map[string]string{
@@ -19,13 +22,16 @@ var errorMessages = map[string]string{
 	ErrUserNotFound:       "Usuário não encontrado",
 	ErrInvalidBody:        "Dados inválidos",
 	ErrInternalServer:     "Ocorreu um erro inesperado",
+	ErrWhenSearchMovie:    "Ocorreu um erro inesperado ao buscar filmes",
+	ErrTMDBConnection:     "Falha na conexão com o serviço de filmes",
+	ErrTMDBAPIError:       "Erro na API de filmes - verifique sua chave de acesso",
 }
 
 type DomainError struct {
-	Code       string // algo tipo: AUTH_INVALID_CREDENTIALS
-	Message    string // mensagem segura
-	Err        error  // mensagem real (para logs)
-	StackTrace string // stacktrace (só em dev)
+	Code       string
+	Message    string
+	Err        error
+	StackTrace string
 }
 
 func (e *DomainError) Error() string {
@@ -41,8 +47,7 @@ func (e *DomainError) GetDetails() map[string]interface{} {
 		"message": e.Message,
 	}
 
-	env := os.Getenv("ENV")
-	if env == "" || env == "development" || env == "dev" {
+	if os.Getenv("ENV") == "dev" {
 		if e.StackTrace != "" {
 			details["stackTrace"] = e.getFilteredStackTrace()
 		}
@@ -56,9 +61,7 @@ func (e *DomainError) getFilteredStackTrace() []string {
 	var filtered []string
 
 	for i, line := range lines {
-		// Pega apenas linhas que contém nosso código (crud/)
 		if strings.Contains(line, "crud/") {
-			// Adiciona a linha atual e a próxima (que tem o arquivo:linha)
 			filtered = append(filtered, strings.TrimSpace(line))
 			if i+1 < len(lines) {
 				filtered = append(filtered, strings.TrimSpace(lines[i+1]))
