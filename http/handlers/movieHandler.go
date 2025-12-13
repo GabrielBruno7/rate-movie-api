@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"crud/domain/errs"
 	"crud/http/response"
 	"crud/usecase"
 	"net/http"
@@ -17,7 +18,13 @@ func NewMovieHandler(usecase *usecase.MovieUsecase) *MovieHandler {
 }
 
 func (movieHandler *MovieHandler) ActionListPopularMovies(context *gin.Context) {
-	movies, err := movieHandler.usecase.ListPopularMovies()
+	text := context.Query("filme")
+	if text == "" {
+		response.BadRequest(context, errs.ErrMissingParameter)
+		return
+	}
+
+	movies, err := movieHandler.usecase.ListPopularMovies(text)
 	if err != nil {
 		response.HandleError(context, err)
 		return

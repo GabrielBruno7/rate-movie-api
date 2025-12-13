@@ -23,17 +23,22 @@ func NewTMDBClient(apiKey string) *TMDBClient {
 	}
 }
 
-func (tmdbClient *TMDBClient) FetchPopularMovies(page int) (*PopularMoviesResponse, error) {
+func (tmdbClient *TMDBClient) FetchMovies(
+	page int,
+	text string,
+) (*PopularMoviesResponse, error) {
 	var result PopularMoviesResponse
 
 	response, err := tmdbClient.client.R().
 		SetQueryParams(map[string]string{
-			"api_key":  tmdbClient.apiKey,
-			"language": "pt-BR",
-			"page":     strconv.Itoa(page),
+			"api_key":       tmdbClient.apiKey,
+			"language":      "pt-BR",
+			"query":         text,
+			"page":          strconv.Itoa(page),
+			"include_adult": "true",
 		}).
 		SetResult(&result).
-		Get(tmdbClient.baseURL + "/movie/popular")
+		Get(tmdbClient.baseURL + "/search/movie")
 
 	if err != nil {
 		return nil, errs.NewWithCode(errs.ErrTMDBConnection, err)

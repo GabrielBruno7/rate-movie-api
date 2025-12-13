@@ -19,5 +19,5 @@ func RegisterMovieRoutes(router *gin.Engine, db *sql.DB) {
 	movieUsecase := usecase.NewMovieUsecase(movieRepo)
 	movieHandler := handlers.NewMovieHandler(movieUsecase)
 
-	protected.GET("/movies/popular", movieHandler.ActionListPopularMovies)
+	protected.GET("/movies/search", movieHandler.ActionListPopularMovies)
 }

@@ -8,19 +8,22 @@ import (
 )
 
 const (
+	ErrInvalidBody        = "4001"
 	ErrInvalidCredentials = "4002"
 	ErrUserNotFound       = "4003"
-	ErrInvalidBody        = "4001"
-	ErrInternalServer     = "5000"
-	ErrWhenSearchMovie    = "5001"
-	ErrTMDBConnection     = "5002"
-	ErrTMDBAPIError       = "5003"
+	ErrMissingParameter   = "4004"
+
+	ErrInternalServer  = "5000"
+	ErrWhenSearchMovie = "5001"
+	ErrTMDBConnection  = "5002"
+	ErrTMDBAPIError    = "5003"
 )
 
 var errorMessages = map[string]string{
 	ErrInvalidCredentials: "Credenciais inválidas",
 	ErrUserNotFound:       "Usuário não encontrado",
 	ErrInvalidBody:        "Dados inválidos",
+	ErrMissingParameter:   "Parâmetro obrigatório ausente",
 	ErrInternalServer:     "Ocorreu um erro inesperado",
 	ErrWhenSearchMovie:    "Ocorreu um erro inesperado ao buscar filmes",
 	ErrTMDBConnection:     "Falha na conexão com o serviço de filmes",

@@ -14,7 +14,6 @@ type ErrorResponse struct {
 }
 
 func Error(c *gin.Context, code string, httpStatus int) {
-	// Cria um DomainError temporário para ter stacktrace
 	domainErr := errs.NewWithCode(code, nil)
 	c.JSON(httpStatus, domainErr.GetDetails())
 }

@@ -25,10 +25,10 @@ func NewMovieDb(apiKey string) movie.Repository {
 	return NewTMDbMovieRepository(client)
 }
 
-func (tmdbMovieRepository *TMDbMovieRepository) ListPopularMovies() ([]movie.Movie, error) {
-	response, err := tmdbMovieRepository.client.FetchPopularMovies(1)
+func (tmdbMovieRepository *TMDbMovieRepository) ListPopularMovies(text string) ([]movie.Movie, error) {
+	response, err := tmdbMovieRepository.client.FetchMovies(1, text)
 	if err != nil {
-		return nil, err // Repassa o erro específico do client (ErrTMDBConnection ou ErrTMDBAPIError)
+		return nil, err
 	}
 
 	movies := make([]movie.Movie, len(response.Results))
