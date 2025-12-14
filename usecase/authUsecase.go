@@ -54,8 +54,9 @@ func (authUsecase *AuthUsecase) generateToken(user *user.User) (string, error) {
 	secret := []byte(os.Getenv("JWT_SECRET"))
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": user.Id,
-		"exp": time.Now().Add(time.Minute * 15).Unix(),
+		"userId": user.Id,
+		"email":  user.Email,
+		"exp":    time.Now().Add(time.Minute * 15).Unix(),
 	})
 
 	return token.SignedString(secret)

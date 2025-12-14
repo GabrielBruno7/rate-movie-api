@@ -31,7 +31,7 @@ func (h *UserHandler) Create(context *gin.Context) {
 	)
 	if err != nil {
 		context.JSON(500, gin.H{
-			"error":      "Erro ao criar usuário",
+			"error":      "Erro ao criar usuário", //TODO: Alterar para utilizar erro novo
 			"stacktrace": err.Error(),
 		})
 		return

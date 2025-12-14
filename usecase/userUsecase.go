@@ -42,7 +42,7 @@ func (userUsecase *UserUsecase) CreateUser(name string, email string, password s
 }
 
 func (userUsecase *UserUsecase) checkIfUserAlreadyExists(user *user.User) error {
-	user, err := userUsecase.repository.LoadUserByEmail(user)
+	user, err := userUsecase.LoadUserByEmail(user)
 	if err != nil {
 		return err
 	}
@@ -52,6 +52,10 @@ func (userUsecase *UserUsecase) checkIfUserAlreadyExists(user *user.User) error 
 	}
 
 	return nil
+}
+
+func (userUsecase *UserUsecase) LoadUserByEmail(user *user.User) (*user.User, error) {
+	return userUsecase.repository.LoadUserByEmail(user)
 }
 
 func (userUsecase *UserUsecase) hashPassword(user *user.User) error {
