@@ -1,48 +1,54 @@
-# Go CRUD API
+# API CRUD em Go
 
-Uma API REST construída em **Go**, utilizando **Clean Architecture**, **PostgreSQL**, **Docker**, **Migrations** e uma arquitetura modular pensada para escalar.  
-Hoje a API realiza operações CRUD de *Tasks*, mas o projeto está sendo estruturado para futuramente se tornar uma **Movie API**, onde usuários poderão marcar filmes assistidos, dar notas, e gerenciar uma coleção pessoal.
+Uma API REST construída com **Go**, utilizando **Clean Architecture**, **PostgreSQL**, **Docker**, **Migrations** e um design modular para escalabilidade. Atualmente, a API suporta operações CRUD para *Tasks* e está sendo expandida para uma **Movie API**, permitindo que os usuários acompanhem filmes assistidos, avaliem e gerenciem coleções pessoais.
 
+## Funcionalidades
+- Autenticação e autorização de usuários
+- Gerenciamento de tarefas (operações CRUD)
+- Avaliação e gerenciamento de coleções de filmes
+- Arquitetura modular e escalável
+- Integração com banco de dados PostgreSQL
+- Ambiente Dockerizado para fácil configuração
 
-## Getting Started
+## Começando
 
-### Prerequisites
+### Pré-requisitos
 - Go 1.18+
 - Docker & Docker Compose
 - PostgreSQL
 
-### Environment Variables
-Set the following environment variables (or use a `.env` file):
-- `DB_HOST`: Database host
-- `DB_PORT`: Database port
-- `DB_USER`: Database user
-- `DB_PASSWORD`: Database password
-- `DB_NAME`: Database name
+### Variáveis de Ambiente
+Defina as seguintes variáveis de ambiente (ou use um arquivo `.env`):
+- `DB_HOST`: Host do banco de dados
+- `DB_PORT`: Porta do banco de dados
+- `DB_USER`: Usuário do banco de dados
+- `DB_PASSWORD`: Senha do banco de dados
+- `DB_NAME`: Nome do banco de dados
 
-### Running with Docker Compose
+### Executando com Docker Compose
 ```sh
 docker compose up -d
 ```
 
-### Running Locally
-1. Export environment variables or create a `.env` file.
-2. Start PostgreSQL.
-3. Run the application:
+### Executando Localmente
+1. Exporte as variáveis de ambiente ou crie um arquivo `.env`.
+2. Inicie o PostgreSQL.
+3. Execute a aplicação:
    ```sh
    go run main.go
    ```
 
-## Project Structure & Architecture
+## Estrutura e Arquitetura do Projeto
 
-This project follows Clean Architecture principles, inspired by Domain Driven Design (DDD). As o projeto cresce, você pode organizar os arquivos em camadas como:
+Este projeto segue os princípios da Clean Architecture, inspirado pelo Domain Driven Design (DDD). O projeto está organizado em camadas:
 
-- **domain/**: entidades e regras de negócio
-- **repository/**: interfaces e implementações para acesso a dados
-- **usecase/**: casos de uso (aplicação)
-- **config/**: configuração de banco de dados e ambiente
-- **main.go**: ponto de entrada da aplicação
+- **domain/**: Entidades e regras de negócio
+- **repository/**: Interfaces e implementações de acesso a dados
+- **usecase/**: Casos de uso da aplicação
+- **config/**: Configuração de banco de dados e ambiente
+- **main.go**: Ponto de entrada da aplicação
 
-Exemplo de estrutura:
+### Exemplo de Estrutura
 ```
 ├── domain/
 │   └── movie.go
@@ -56,4 +62,31 @@ Exemplo de estrutura:
 ├── go.mod
 ├── docker-compose.yml
 ```
+
+## Endpoints da API
+
+### Autenticação
+- **POST** `/login`: Login de usuário
+- **POST** `/user`: Criar um novo usuário
+
+### Tarefas
+- **GET** `/tasks`: Listar todas as tarefas
+- **POST** `/tasks`: Criar uma nova tarefa
+
+### Filmes
+- **GET** `/movies/search`: Buscar filmes
+- **POST** `/movie/rate`: Avaliar um filme
+- **GET** `/movie/rates/list`: Listar todas as avaliações de filmes
+- **GET** `/movie/rate/:id/details`: Obter detalhes de uma avaliação específica
+
+## Migrations
+Use os scripts fornecidos para gerenciar as migrações do banco de dados:
+- `migrate-up.sh`: Aplicar migrações
+- `migrate-down.sh`: Reverter migrações
+
+## Contribuindo
+Contribuições são bem-vindas! Faça um fork do repositório e envie um pull request.
+
+## Licença
+Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
