@@ -12,6 +12,7 @@ const (
 	ErrInvalidCredentials = "4002"
 	ErrUserNotFound       = "4003"
 	ErrMissingParameter   = "4004"
+	ErrRateNotFound       = "4005"
 
 	ErrInternalServer  = "5000"
 	ErrWhenSearchMovie = "5001"
@@ -28,6 +29,7 @@ var errorMessages = map[string]string{
 	ErrWhenSearchMovie:    "Ocorreu um erro inesperado ao buscar filmes",
 	ErrTMDBConnection:     "Falha na conexão com o serviço de filmes",
 	ErrTMDBAPIError:       "Erro na API de filmes - verifique sua chave de acesso",
+	ErrRateNotFound:       "Avaliação não encontrada",
 }
 
 type DomainError struct {

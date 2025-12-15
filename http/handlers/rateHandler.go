@@ -79,3 +79,31 @@ func (rateHandler *RateHandler) ActionListRates(context *gin.Context) {
 
 	context.JSON(200, mappedRates)
 }
+
+func (rateHandler *RateHandler) ActionRateDetails(context *gin.Context) {
+	user := user.User{
+		Email: context.GetString("email"),
+	}
+
+	rate := &rate.Rate{
+		ID:   context.Param("id"),
+		User: user,
+	}
+
+	rate, err := rateHandler.usecase.LoadRateById(rate)
+	if err != nil {
+		response.BadRequest(context, errs.ErrRateNotFound)
+		return
+	}
+
+	rateItem := map[string]interface{}{
+		"ID":        rate.ID,
+		"Name":      rate.Name,
+		"TmdbId":    rate.TmdbId,
+		"Rate":      rate.Rate,
+		"Comment":   rate.Comment,
+		"ImagePath": rate.ImagePath,
+	}
+
+	context.JSON(200, rateItem)
+}

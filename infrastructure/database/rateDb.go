@@ -141,3 +141,38 @@ func (repository *RateDb) FindAllRatesByUser(r *rate.Rate) ([]*rate.Rate, error)
 
 	return rates, nil
 }
+
+func (repository *RateDb) FindRateById(rate *rate.Rate) (*rate.Rate, error) {
+	query := `
+		SELECT
+			id,
+			movie_rate,
+			movie_name,
+			movie_tmdb_id,
+			user_id,
+			comment,
+			movie_image_path
+		FROM rates
+		WHERE id = $1 AND user_id = $2
+		LIMIT 1
+	`
+	err := repository.db.QueryRow(query, rate.ID, rate.User.Id).Scan(
+		&rate.ID,
+		&rate.Rate,
+		&rate.Name,
+		&rate.TmdbId,
+		&rate.User.Id,
+		&rate.Comment,
+		&rate.ImagePath,
+	)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+
+		return nil, err
+	}
+
+	return rate, nil
+}

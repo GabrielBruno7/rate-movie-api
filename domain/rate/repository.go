@@ -5,4 +5,5 @@ type Repository interface {
 	UpdateRate(rate *Rate) error
 	FindRateByTmdbId(rate *Rate) (*Rate, error)
 	FindAllRatesByUser(rate *Rate) ([]*Rate, error)
+	FindRateById(rate *Rate) (*Rate, error)
 }

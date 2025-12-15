@@ -62,3 +62,21 @@ func (rateUsecase *RateUsecase) loadUser(rate *rate.Rate) (*rate.Rate, error) {
 
 	return rate, nil
 }
+
+func (rateUsecase *RateUsecase) LoadRateById(rate *rate.Rate) (*rate.Rate, error) {
+	_, err := rateUsecase.loadUser(rate)
+	if err != nil {
+		return nil, err
+	}
+
+	existingRate, err := rateUsecase.repository.FindRateById(rate)
+	if err != nil {
+		return nil, errs.NewWithCode(errs.ErrTMDBAPIError, nil)
+	}
+
+	if existingRate == nil {
+		return nil, errs.NewWithCode(errs.ErrTMDBAPIError, nil)
+	}
+
+	return existingRate, nil
+}

@@ -23,4 +23,5 @@ func RegisterRateRoutes(router *gin.Engine, db *sql.DB) {
 
 	protected.POST("/movie/rate", rateHandler.ActionRateMovie)
 	protected.GET("/movie/rates/list", rateHandler.ActionListRates)
+	protected.GET("/movie/rate/:id/details", rateHandler.ActionRateDetails)
 }
