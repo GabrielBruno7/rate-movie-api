@@ -1,6 +1,6 @@
-# API CRUD em Go
+# Rate Movie API
 
-Uma API REST construída com **Go**, utilizando **Clean Architecture**, **PostgreSQL**, **Docker**, **Migrations** e um design modular para escalabilidade. Atualmente, **Movie API**, permite que os usuários acompanhem filmes assistidos, avaliem e gerenciem coleções pessoais.
+Uma API REST construída com **Go**, utilizando **Clean Architecture**, **PostgreSQL**, **Docker**, **Migrations** e um design modular para escalabilidade. Atualmente, **Rate Movie API**, permite que os usuários acompanhem filmes assistidos, avaliem e gerenciem coleções pessoais.
 
 ## Funcionalidades
 - Autenticação e autorização de usuários
