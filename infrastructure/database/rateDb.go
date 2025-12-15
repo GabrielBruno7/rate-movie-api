@@ -66,6 +66,7 @@ func (repository *RateDb) FindRateByTmdbId(rate *rate.Rate) (*rate.Rate, error) 
 
 	return rate, nil
 }
+
 func (repository *RateDb) UpdateRate(rate *rate.Rate) error {
 	query := `
 		UPDATE rates
@@ -93,4 +94,50 @@ func (repository *RateDb) UpdateRate(rate *rate.Rate) error {
 	}
 
 	return nil
+}
+
+func (repository *RateDb) FindAllRatesByUser(r *rate.Rate) ([]*rate.Rate, error) {
+	rows, err := repository.db.Query(
+		`SELECT 
+			id,
+			movie_name,
+			movie_tmdb_id,
+			movie_rate,
+			comment,
+			movie_image_path
+		FROM rates
+		WHERE user_id = $1`,
+		r.User.Id,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var rates []*rate.Rate
+
+	for rows.Next() {
+		rateItem := &rate.Rate{}
+
+		err := rows.Scan(
+			&rateItem.ID,
+			&rateItem.Name,
+			&rateItem.TmdbId,
+			&rateItem.Rate,
+			&rateItem.Comment,
+			&rateItem.ImagePath,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		rates = append(rates, rateItem)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return rates, nil
 }

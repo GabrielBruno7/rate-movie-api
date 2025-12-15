@@ -39,6 +39,15 @@ func (rateUsecase *RateUsecase) RateMovie(rate *rate.Rate) error {
 	return rateUsecase.repository.RateMovie(rate)
 }
 
+func (rateUsecase *RateUsecase) ListRates(rate *rate.Rate) ([]*rate.Rate, error) {
+	_, err := rateUsecase.loadUser(rate)
+	if err != nil {
+		return nil, err
+	}
+
+	return rateUsecase.repository.FindAllRatesByUser(rate)
+}
+
 func (rateUsecase *RateUsecase) loadUser(rate *rate.Rate) (*rate.Rate, error) {
 	user, err := rateUsecase.UserUsecase.LoadUserByEmail(&rate.User)
 	if err != nil {

@@ -47,3 +47,35 @@ func (rateHandler *RateHandler) ActionRateMovie(context *gin.Context) {
 
 	context.JSON(202, gin.H{"id": rate.ID})
 }
+
+func (rateHandler *RateHandler) ActionListRates(context *gin.Context) {
+	user := user.User{
+		Email: context.GetString("email"),
+	}
+
+	rate := &rate.Rate{
+		User: user,
+	}
+
+	rates, err := rateHandler.usecase.ListRates(rate)
+	if err != nil {
+		response.HandleError(context, err)
+		return
+	}
+
+	mappedRates := make([]map[string]interface{}, 0, len(rates))
+	for _, r := range rates {
+		rateItem := map[string]interface{}{
+			"ID":        r.ID,
+			"Name":      r.Name,
+			"TmdbId":    r.TmdbId,
+			"Rate":      r.Rate,
+			"Comment":   r.Comment,
+			"ImagePath": r.ImagePath,
+		}
+
+		mappedRates = append(mappedRates, rateItem)
+	}
+
+	context.JSON(200, mappedRates)
+}
